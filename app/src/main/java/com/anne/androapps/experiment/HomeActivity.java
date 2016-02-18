@@ -1,25 +1,35 @@
 package com.anne.androapps.experiment;
 
+
+import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
+
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 public class HomeActivity extends AppCompatActivity {
+
+    Fragment fragment = null;
+    FragmentManager fm;
+    FragmentTransaction ft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+       /* Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);*/
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fm = getSupportFragmentManager();
+        ft = fm.beginTransaction();
+
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -27,8 +37,8 @@ public class HomeActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-        findViewById(R.id.pink_icon).setOnClickListener(new View.OnClickListener() {
+*/
+        /*findViewById(R.id.pink_icon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(HomeActivity.this, "Clicked pink Floating Action Button", Toast.LENGTH_SHORT).show();
@@ -40,54 +50,102 @@ public class HomeActivity extends AppCompatActivity {
         button.setColorNormalResId(R.color.pink);
         button.setColorPressedResId(R.color.pink_pressed);
         button.setIcon(R.drawable.ic_fab_star);
-        button.setStrokeVisible(false);
+        button.setStrokeVisible(false);*/
 
-        final View actionB = findViewById(R.id.action_b);
-
-        FloatingActionButton actionC = new FloatingActionButton(getBaseContext());
-        actionC.setTitle("Hide/Show Action above");
-        actionC.setOnClickListener(new OnClickListener() {
+        final FloatingActionButton actionB = (FloatingActionButton)findViewById(R.id.action_b);
+        final FloatingActionButton actionD = (FloatingActionButton)findViewById(R.id.action_d);
+        final FloatingActionButton actionE = (FloatingActionButton)findViewById(R.id.action_e);
+        final FloatingActionButton actionC = new FloatingActionButton(getBaseContext());
+        actionB.setVisibility(View.GONE);
+        actionD.setVisibility(View.GONE);
+        actionE.setVisibility(View.GONE);
+        actionC.setTitle("Hide/Show Chart Menu");
+        actionC.setColorNormal(R.color.white);
+        actionC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 actionB.setVisibility(actionB.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+                actionD.setVisibility(actionD.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+                actionE.setVisibility(actionE.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
             }
         });
 
         final FloatingActionsMenu menuMultipleActions = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
         menuMultipleActions.addButton(actionC);
 
-        final FloatingActionButton removeAction = (FloatingActionButton) findViewById(R.id.button_remove);
-        removeAction.setOnClickListener(new OnClickListener() {
+       /* final FloatingActionButton removeAction = (FloatingActionButton) findViewById(R.id.button_remove);
+        removeAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((FloatingActionsMenu) findViewById(R.id.multiple_actions_down)).removeButton(removeAction);
             }
-        });
+        });*/
 
-        ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
+        /*ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
         drawable.getPaint().setColor(getResources().getColor(R.color.white));
-        ((FloatingActionButton) findViewById(R.id.setter_drawable)).setIconDrawable(drawable);
+        ((FloatingActionButton) findViewById(R.id.setter_drawable)).setIconDrawable(drawable);*/
 
         final FloatingActionButton actionA = (FloatingActionButton) findViewById(R.id.action_a);
-        actionA.setOnClickListener(new OnClickListener() {
+        actionA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                actionA.setTitle("Action A clicked");
+                actionA.setTitle("Choose Image Loader");
+                showFragment(new ImageLoaderPicasso());
             }
         });
 
+        final FloatingActionButton actionF = (FloatingActionButton) findViewById(R.id.action_f);
+        actionF.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                actionA.setTitle("Choose Image Gallery");
+                showFragment(new ImageGallery());
+            }
+        });
+
+        actionB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                actionB.setTitle("Choose Pie Chart");
+                /*fragment = new ChartTwo();
+                fm = getSupportFragmentManager();
+                ft = fm.beginTransaction();
+                ft.replace(R.id.fragment_replace, fragment);
+                ft.commit();*/
+                showFragment(new ChartTwo());
+            }
+        });
+
+        actionD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                actionC.setTitle("Choose Bar Chart");
+                showFragment(new ChartThree());
+            }
+        });
+
+        actionE.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                actionE.setTitle("Choose Line Chart");
+                showFragment(new ChartFragment());
+            }
+        });
+
+
+
         // Test that FAMs containing FABs with visibility GONE do not cause crashes
-        findViewById(R.id.button_gone).setVisibility(View.GONE);
+        /*findViewById(R.id.button_gone).setVisibility(View.GONE);
 
         final FloatingActionButton actionEnable = (FloatingActionButton) findViewById(R.id.action_enable);
-        actionEnable.setOnClickListener(new OnClickListener() {
+        actionEnable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 menuMultipleActions.setEnabled(!menuMultipleActions.isEnabled());
             }
-        });
+        });*/
 
-        FloatingActionsMenu rightLabels = (FloatingActionsMenu) findViewById(R.id.right_labels);
+        /*FloatingActionsMenu rightLabels = (FloatingActionsMenu) findViewById(R.id.right_labels);
         FloatingActionButton addedOnce = new FloatingActionButton(this);
         addedOnce.setTitle("Added once");
         rightLabels.addButton(addedOnce);
@@ -96,28 +154,14 @@ public class HomeActivity extends AppCompatActivity {
         addedTwice.setTitle("Added twice");
         rightLabels.addButton(addedTwice);
         rightLabels.removeButton(addedTwice);
-        rightLabels.addButton(addedTwice);
+        rightLabels.addButton(addedTwice);*/
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    private void showFragment(Fragment classFrag){
+        fragment = classFrag;
+        fm = getSupportFragmentManager();
+        ft = fm.beginTransaction();
+        ft.replace(R.id.fragment_replace, fragment);
+        ft.commit();
     }
 }

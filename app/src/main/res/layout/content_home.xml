@@ -16,4 +16,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!" />
+
+    <fragment
+        android:id="@+id/fragment_replace"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.anne.androapps.experiment.ChartFragment">
+
+    </fragment>
 </RelativeLayout>
